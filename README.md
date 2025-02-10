@@ -1,4 +1,4 @@
-# RAF Food Ordering System
+# Food Ordering System
 
 A web application for food ordering built with Spring Boot and Angular. The system allows users to place and track food orders, with different permissions for regular users and administrators.
 
