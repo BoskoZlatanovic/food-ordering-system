@@ -52,6 +52,11 @@ A web application for food ordering built with Spring Boot and Angular. The syst
 - Track order status
 - Cancel orders in ORDERED status
 
+### Architecture Features
+- DTO pattern for efficient data transfer
+- Clear separation of concerns
+- Entity-DTO mapping for secure data exposure
+
 ## Project Structure
 
 ### Backend
@@ -63,6 +68,7 @@ src/
 │   │       ├── config/
 │   │       ├── controller/
 │   │       ├── model/
+|   |            └── dto/      
 │   │       ├── repository/
 │   │       ├── service/
 │   │       └── util/
