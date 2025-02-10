@@ -1,0 +1,97 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Orders</h2>
+    <button class="btn btn-primary" [routerLink]="['/orders/new']">
+      Create New Order
+    </button>
+  </div>
+  <!-- Filter Form -->
+  <form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="mb-4">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <select class="form-select" formControlName="status">
+          <option value="">All Statuses</option>
+          <option *ngFor="let status of OrderStatus | keyvalue" [value]="status.value">
+            {{status.value}}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" formControlName="dateFrom" placeholder="From Date">
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" formControlName="dateTo" placeholder="To Date">
+      </div>
+      <div class="col-md-3" *ngIf="isAdmin">
+        <input type="number" class="form-control" formControlName="userId" placeholder="User ID">
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Filter</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Orders Table -->
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Items</th>
+        <th>Created By</th>
+        <th>Created At</th>
+        <th>Scheduled For</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{order.id}}</td>
+        <td>
+            <span [class]="getStatusClass(order.status)">
+              {{order.status}}
+            </span>
+        </td>
+        <td>
+          <ul class="list-unstyled">
+            <li *ngFor="let item of order.items">
+              {{item.name}} - ${{item.price}}
+            </li>
+          </ul>
+        </td>
+        <td>{{order.createdBy.email}}</td>
+        <td>{{order.createdAt | date:'dd.MM.YYYY | HH:mm'}}</td>
+        <td>
+          <span *ngIf="order.scheduledFor; else notScheduled">
+            {{order.scheduledFor | date:'dd.MM.YYYY | HH:mm'}}
+          </span>
+          <ng-template #notScheduled>N/A</ng-template>
+        </td>
+        <td>
+          <button *ngIf="order.status === 'ORDERED'"
+                  class="btn btn-danger btn-sm"
+                  (click)="cancelOrder(order.id!)">
+            Cancel
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Order pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 0">
+        <button class="page-link" (click)="onPageChange(currentPage - 1)">Previous</button>
+      </li>
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+          [class.active]="i === currentPage">
+        <button class="page-link" (click)="onPageChange(i)">{{ i + 1 }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+        <button class="page-link" (click)="onPageChange(currentPage + 1)">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>

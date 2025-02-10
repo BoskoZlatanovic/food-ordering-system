@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title mb-4">{{ isEditMode ? 'Edit User' : 'Create User' }}</h2>
+
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="firstName" class="form-label">First Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName"
+                formControlName="firstName"
+                [class.is-invalid]="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched"
+              >
+              <div class="invalid-feedback" *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
+                First name is required
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                formControlName="lastName"
+                [class.is-invalid]="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched"
+              >
+              <div class="invalid-feedback" *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
+                Last name is required
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                [class.is-invalid]="userForm.get('email')?.invalid && userForm.get('email')?.touched"
+              >
+              <div class="invalid-feedback" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                <span *ngIf="userForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="userForm.get('email')?.errors?.['email']">Invalid email format</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">
+                Password {{ isEditMode ? '(Leave blank to keep current)' : '' }}
+              </label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                formControlName="password"
+                [class.is-invalid]="userForm.get('password')?.invalid && userForm.get('password')?.touched"
+              >
+              <div class="invalid-feedback" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+                Password is required
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Permissions</label>
+              <div class="row g-3">
+                <div *ngFor="let type of permissionTypes" class="col-md-6">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="type"
+                      [value]="type"
+                      [disabled]="!hasFullAccess()"
+                      (change)="onPermissionChange(type, $event.target)"
+                      [checked]="isPermissionSelected(type)"
+                    >
+                    <label class="form-check-label" [for]="type">{{ type }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+                {{ isEditMode ? 'Update' : 'Create' }}
+              </button>
+              <button type="button" (click)="router.navigate(['/users'])" class="btn btn-secondary">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

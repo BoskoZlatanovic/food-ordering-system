@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <h2>Error Log</h2>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Order ID</th>
+        <th>Operation</th>
+        <th>Message</th>
+        <th>User</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let error of errors">
+        <td>{{error.date | date:'medium'}}</td>
+        <td>{{error.order.id}}</td>
+        <td>{{error.operation}}</td>
+        <td>{{error.message}}</td>
+        <td>{{error.order.createdBy.email}}</td>
+      </tr>
+      <tr *ngIf="errors.length === 0">
+        <td colspan="5" class="text-center">No errors found</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Error pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 0">
+        <button class="page-link" (click)="onPageChange(currentPage - 1)">Previous</button>
+      </li>
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+          [class.active]="i === currentPage">
+        <button class="page-link" (click)="onPageChange(i)">{{ i + 1 }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+        <button class="page-link" (click)="onPageChange(currentPage + 1)">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>

@@ -1,0 +1,13 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container">
+    <div class="navbar-brand">
+      <a routerLink="/users" routerLinkActive="active" class="me-4 text-white text-decoration-none">User Management</a>
+      <a routerLink="/orders" routerLinkActive="active" class="me-4 text-white text-decoration-none">Order Management</a>
+      <a routerLink="/errors" routerLinkActive="active" class="text-white text-decoration-none">Error Log</a>
+    </div>
+    <div class="d-flex align-items-center">
+      <span class="text-white me-3">Hi, {{ getCurrentUserEmail() }}</span>
+      <button class="btn btn-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
